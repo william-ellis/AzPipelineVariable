@@ -8,5 +8,15 @@
     https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts
 #>
 function Set-AzPipelineVariable {
-    Write-Host '##vso[task.setvariable variable=foo]xyz'
+    param(
+        [Parameter(Mandatory)]
+        [string]
+        # The name of the variable to set.
+        $Name,
+        [Parameter(Mandatory)]
+        [string]
+        # The value of the variable to set.
+        $Value
+    )
+    Write-Host "##vso[task.setvariable variable=$Name]$Value"
 }
