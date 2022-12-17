@@ -9,6 +9,10 @@ Describe 'Set-AzPipelineVariable' {
         $script:command = $null
     }
 
+    AfterEach {
+        $script:command = $null
+    }
+
     It 'Works' {
         Mock Write-Host {
             $script:command = $Object
