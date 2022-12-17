@@ -10,7 +10,7 @@ Describe 'Set-AzPipelineVariable' {
     }
 
     AfterEach {
-        $script:command = $null
+        Remove-Variable command -Scope Script
     }
 
     It 'Works' {
