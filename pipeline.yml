@@ -19,7 +19,7 @@ steps:
   displayName: prepare module for publishing
 - pwsh: Publish-PSResource -Path .\output\AzPipelineVariable -Repository LocalRepo
   displayName: publish module to local repository
-- pwsh: Install-PSResource AzPipelineVariable -Repository LocalRepo -Prerelease
+- pwsh: Install-PSResource AzPipelineVariable -Repository LocalRepo -Prerelease -Verbose
   displayName: install module from local repo
 - pwsh: |
     Import-Module AzPipelineVariable
