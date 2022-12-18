@@ -16,6 +16,7 @@ function Set-AzPipelineVariable {
         $Name,
         
         [Parameter(Mandatory, ValueFromPipeline)]
+        [AllowEmptyString()]
         [string]
         # The value of the variable to set.
         $Value,

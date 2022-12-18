@@ -54,6 +54,12 @@ Describe 'Set-AzPipelineVariable' {
         $command | Should -BeLike '*]xyz'
     }
 
+    It 'Allows the value to be an empty string' {
+        Set-AzPipelineVariable foo ''
+
+        $command | Should -BeLike '*]'
+    }
+
     Context 'Verbose output' {
 
         It 'Works' {
