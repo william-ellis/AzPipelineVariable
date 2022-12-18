@@ -32,5 +32,7 @@ function Set-AzPipelineVariable {
         $Mutable
     )
 
-    Write-Host "##vso[task.setvariable variable=$Name;readonly=$(-not $Mutable);output=$Output;secret=$Secret]$Value"
+    '##vso[task.setvariable variable={0};readonly={1};output={2};secret={3}]{4}' -f `
+        $Name, -not $Mutable, $Output, $Secret, $Value
+    | Write-Host
 }
