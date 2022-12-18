@@ -22,4 +22,14 @@ Describe 'Set-AzPipelineVariable' {
         
         $command | Should -Match '##vso\[task\.setvariable.*variable=foo.*\]xyz'
     }
+
+    It 'Makes the variable readonly by default' {
+        Mock Write-Host {
+            $script:command = $Object
+        } -ModuleName AzPipelineVariable
+        
+        Set-AzPipelineVariable foo xyz
+        
+        $command | Should -Match 'readonly=true'         
+    }
 }

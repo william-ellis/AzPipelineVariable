@@ -18,5 +18,5 @@ function Set-AzPipelineVariable {
         # The value of the variable to set.
         $Value
     )
-    Write-Host "##vso[task.setvariable variable=$Name;readonly=false]$Value"
+    Write-Host "##vso[task.setvariable variable=$Name;readonly=true]$Value"
 }
