@@ -11,7 +11,8 @@
     PrivateData = @{
         PSData = @{
             Tags = @('Azure', 'Pipelines', 'Variable', 'Automation')
-            LicenseUri = 'https://opensource.org/licenses/MIT'
+            # see https://github.com/PowerShell/PowerShellGet/issues/835
+            # LicenseUri = 'https://opensource.org/licenses/MIT'
             ProjectUri = 'https://github.com/william-ellis/AzPipelineVariable'
         }
     }

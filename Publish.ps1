@@ -13,7 +13,6 @@ Copy-Item .\LICENSE output\AzPipelineVariable
 Copy-Item .\README.md output\AzPipelineVariable
 Copy-Item .\CHANGELOG.md output\AzPipelineVariable
 
-Publish-Module `
-    -Name .\output\AzPipelineVariable `
-    -Repository $Repository `
-    -AllowPrerelease -SkipAutomaticTags
+Publish-PSResource `
+    -Path .\output\AzPipelineVariable `
+    -Repository $Repository
