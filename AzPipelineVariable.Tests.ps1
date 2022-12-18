@@ -34,4 +34,16 @@ Describe 'Set-AzPipelineVariable' {
         
         $command | Should -Match 'readonly=false'
     }
+
+    It 'Can create an output variable' {
+        Set-AzPipelineVariable foo xyz -Output
+        
+        $command | Should -Match 'output=true'
+    }
+
+    It 'Can create a secret variable' {
+        Set-AzPipelineVariable foo xyz -Secret
+        
+        $command | Should -Match 'secret=true'
+    }
 }
