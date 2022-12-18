@@ -39,6 +39,6 @@ function Set-AzPipelineVariable {
     | Write-Host
 
     "Setting variable '{0}' to '{1}'. [readonly={2}; output={3}; secret={4}]" `
-        -f $Name, $Value, -not $Mutable, $Output, $Secret
+        -f $Name, ($Secret ? '***' : $Value), -not $Mutable, $Output, $Secret
     | Write-Verbose
 }

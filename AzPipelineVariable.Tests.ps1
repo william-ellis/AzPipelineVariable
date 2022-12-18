@@ -62,5 +62,12 @@ Describe 'Set-AzPipelineVariable' {
             $verbose | Should -Be `
             "Setting variable 'foo' to 'xyz'. [readonly=True; output=False; secret=False]"
         }
+
+        It 'Does not output secret values' {
+            $verbose = Set-AzPipelineVariable foo xyz -Secret -Verbose 4>&1
+
+            $verbose | Should -Be `
+            "Setting variable 'foo' to '***'. [readonly=True; output=False; secret=True]"
+        }
     }
 }
