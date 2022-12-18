@@ -20,6 +20,6 @@ Describe 'Set-AzPipelineVariable' {
         
         Set-AzPipelineVariable foo xyz
         
-        $command | Should -Be '##vso[task.setvariable variable=foo]xyz'
+        $command | Should -Match '##vso\[task\.setvariable.*variable=foo.*\]xyz'
     }
 }
