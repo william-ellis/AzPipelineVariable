@@ -47,4 +47,10 @@ Describe 'Set-AzPipelineVariable' {
         
         $command | Should -Match 'secret=true'
     }
+
+    It 'Can take the value as pipeline input' {
+        (@{ value = 'xyz' }).value | Set-AzPipelineVariable foo
+
+        $command | Should -BeLike '*]xyz'
+    }
 }
