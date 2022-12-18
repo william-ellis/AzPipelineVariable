@@ -13,7 +13,7 @@ steps:
 - pwsh: |
     $dir = "$(Agent.TempDirectory)\LocalRepo"
     New-Item -Path $dir -ItemType directory
-    Register-PSRepository LocalRepo -SourceLocation $dir -PublishLocation $dir -InstallationPolicy Trusted
+    Register-PSResourceRepository LocalRepo -Uri $dir -Trusted
   displayName: register local powershell repository
 - pwsh: .\Publish.ps1
   displayName: prepare module for publishing
