@@ -2,4 +2,13 @@ pool:
   vmImage: windows-latest
 
 steps:
-  - pwsh: Write-Host 'Hello world'
+  - pwsh: |
+      Invoke-Pester -Configuration (New-PesterConfiguration @{
+        TestResult = @{ Enabled = $true; OutputFormat = 'NUnitXml' }
+      })
+  - task: PublishTestResults@2
+    displayName: publish test results
+    condition: always()
+    inputs:
+      testResultsFiles: testResults.xml
+      testResultsFormat: NUnit
