@@ -13,7 +13,7 @@ Describe 'Set-AzPipelineVariable' {
         Remove-Variable command -Scope Script
     }
 
-    It 'Works' {
+    It 'Sets the variable' {
         Mock Write-Host {
             $script:command = $Object
         } -ModuleName AzPipelineVariable
