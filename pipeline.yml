@@ -13,7 +13,8 @@ steps:
 - pwsh: .\Publish.ps1 -Repository LocalRepo
   displayName: publish module to local repository
 - pwsh: |
-    Import-Module AzPipelineVariable -Repository LocalRepo
+    Install-Module AzPipelineVariable -Repository LocalRepo -AllowPrerelease    
+    Import-Module AzPipelineVariable
     Invoke-Pester -Configuration (New-PesterConfiguration @{
       TestResult = @{ Enabled = $true; OutputFormat = 'NUnitXml' }
       Run = @{
