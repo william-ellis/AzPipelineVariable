@@ -8,6 +8,7 @@
     https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts
 #>
 function Set-AzPipelineVariable {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
         [string]
@@ -32,7 +33,12 @@ function Set-AzPipelineVariable {
         $Mutable
     )
 
-    '##vso[task.setvariable variable={0};readonly={1};output={2};secret={3}]{4}' -f `
-        $Name, -not $Mutable, $Output, $Secret, $Value
+    
+    '##vso[task.setvariable variable={0};readonly={1};output={2};secret={3}]{4}' `
+        -f $Name, -not $Mutable, $Output, $Secret, $Value
     | Write-Host
+
+    "Setting variable '{0}' to '{1}'. [readonly={2}; output={3}; secret={4}]" `
+        -f $Name, $Value, -not $Mutable, $Output, $Secret
+    | Write-Verbose
 }

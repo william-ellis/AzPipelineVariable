@@ -53,4 +53,14 @@ Describe 'Set-AzPipelineVariable' {
 
         $command | Should -BeLike '*]xyz'
     }
+
+    Context 'Verbose output' {
+
+        It 'Works' {
+            $verbose = Set-AzPipelineVariable foo xyz -Verbose 4>&1
+
+            $verbose | Should -Be `
+            "Setting variable 'foo' to 'xyz'. [readonly=True; output=False; secret=False]"
+        }
+    }
 }
