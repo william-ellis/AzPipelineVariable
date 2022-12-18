@@ -60,6 +60,18 @@ Describe 'Set-AzPipelineVariable' {
         $command | Should -BeLike '*]'
     }
 
+    It 'Allows the value to be null' {
+        Set-AzPipelineVariable foo $null
+
+        $command | Should -BeLike '*]'
+    }
+
+    It 'Allows the value to be whitespace' {
+        Set-AzPipelineVariable foo ' '
+
+        $command | Should -BeLike '*] '
+    }
+
     Context 'Verbose output' {
 
         It 'Works' {
