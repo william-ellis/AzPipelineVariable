@@ -16,7 +16,11 @@ function Set-AzPipelineVariable {
         [Parameter(Mandatory)]
         [string]
         # The value of the variable to set.
-        $Value
+        $Value,
+        # Makes the variable mutable (not readonly).
+        [switch]
+        $Mutable
     )
-    Write-Host "##vso[task.setvariable variable=$Name;readonly=true]$Value"
+
+    Write-Host "##vso[task.setvariable variable=$Name;readonly=$(-not $Mutable)]$Value"
 }

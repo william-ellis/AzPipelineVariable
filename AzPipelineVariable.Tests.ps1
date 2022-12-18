@@ -28,4 +28,10 @@ Describe 'Set-AzPipelineVariable' {
         
         $command | Should -Match 'readonly=true'         
     }
+
+    It 'Can create a mutable variable' {
+        Set-AzPipelineVariable foo xyz -Mutable
+        
+        $command | Should -Match 'readonly=false'
+    }
 }
