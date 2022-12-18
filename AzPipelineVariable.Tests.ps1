@@ -20,7 +20,8 @@ Describe 'Set-AzPipelineVariable' {
     It 'Sets the variable' {
         Set-AzPipelineVariable foo xyz
         
-        $command | Should -Match '##vso\[task\.setvariable.*variable=foo.*\]xyz'
+        $command | Should -Be `
+        '##vso[task.setvariable variable=foo;readonly=true;output=false;secret=false]xyz'
     }
 
     It 'Makes the variable readonly by default' {
