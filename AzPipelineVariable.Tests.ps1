@@ -1,6 +1,14 @@
+[CmdletBinding()]
+param(
+    # Skip importing the module under test. Intended mainly for CI.
+    [switch]$SkipImport
+)
+
 BeforeAll {
     $ErrorActionPreference = 'Stop'
-    Import-Module .\AzPipelineVariable.psm1 -Force
+    if (-not $SkipImport) {
+        Import-Module .\AzPipelineVariable.psm1 -Force
+    }
 }
 
 Describe 'Set-AzPipelineVariable' {

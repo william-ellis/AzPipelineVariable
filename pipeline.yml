@@ -2,13 +2,29 @@ pool:
   vmImage: windows-latest
 
 steps:
-  - pwsh: |
-      Invoke-Pester -Configuration (New-PesterConfiguration @{
-        TestResult = @{ Enabled = $true; OutputFormat = 'NUnitXml' }
-      })
-  - task: PublishTestResults@2
-    displayName: publish test results
-    condition: always()
-    inputs:
-      testResultsFiles: testResults.xml
-      testResultsFormat: NUnit
+- pwsh: |
+    Install-Module PowerShellGet -RequiredVersion '3.0.17-beta17' -AllowPrerelease -Force
+  displayName: install PowerShellGet v3
+- pwsh: |
+    $dir = "$(Agent.TempDirectory)\LocalRepo"
+    New-Item -Path $dir -ItemType directory
+    Register-PSRepository LocalRepo -SourceLocation $dir -PublishLocation $dir -InstallationPolicy Trusted
+  displayName: register local powershell repository
+- pwsh: .\Publish.ps1 -Repository LocalRepo
+  displayName: publish module to local repository
+- pwsh: |
+    Import-Module AzPipelineVariable -Repository LocalRepo
+    Invoke-Pester -Configuration (New-PesterConfiguration @{
+      TestResult = @{ Enabled = $true; OutputFormat = 'NUnitXml' }
+      Run = @{
+        Container = New-PesterContainer `
+          -Path 'AzPipelineVariable.Tests.ps1' `
+          -Data @{ SkipImport = $true }
+      }
+    })
+- task: PublishTestResults@2
+  displayName: publish test results
+  condition: always()
+  inputs:
+    testResultsFiles: testResults.xml
+    testResultsFormat: NUnit
