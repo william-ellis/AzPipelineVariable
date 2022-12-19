@@ -51,10 +51,10 @@ steps:
     Set-AzPipelineVariable emptyVar $null
   displayName: set variables for smoke test
   name: setVars
+- pwsh: Set-AzPipelineVariable mutableVar 'mutated'
+  displayName: mutate var
 - pwsh: |
     Import-Module AzPipelineVariable
-    
-    Set-AzPipelineVariable mutableVar 'mutated'
     
     Invoke-Pester -Configuration (New-PesterConfiguration @{
       TestResult = @{
