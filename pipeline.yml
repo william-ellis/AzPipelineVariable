@@ -16,7 +16,7 @@ steps:
   displayName: register local powershell repository
 - pwsh: .\Publish.ps1
   displayName: prepare module for publishing
-- pwsh: Publish-PSResource -Path .\output\AzPipelineVariable -Repository LocalRepo
+- pwsh: Publish-PSResource -Path .\output -Repository LocalRepo
   displayName: publish module to local repository
 - pwsh: Install-PSResource AzPipelineVariable -Repository LocalRepo -Prerelease -Verbose
   displayName: install module from local repo
@@ -37,7 +37,7 @@ steps:
     testResultsFiles: testResults.xml
     testResultsFormat: NUnit
 - pwsh: |
-    Publish-PSResource -Path .\output\AzPipelineVariable -Repository PSGallery -ApiKey $Env:API_KEY
+    Publish-PSResource -Path .\output -Repository PSGallery -ApiKey $Env:API_KEY
   condition: and(succeeded(), eq(variables['forceRelease'], 'true'))
   env:
     API_KEY: $(PSGalleryApiKey)
