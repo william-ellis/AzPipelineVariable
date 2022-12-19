@@ -100,6 +100,6 @@ steps:
     testRunTitle: Integration Tests
 - pwsh: |
     Publish-PSResource -Path .\output -Repository PSGallery -ApiKey $Env:API_KEY
-  condition: and(succeeded(), eq(variables['forceRelease'], 'true'))
+  condition: and(succeeded(), eq('${{ parameters.forceRelease }}', 'true'))
   env:
     API_KEY: $(PSGalleryApiKey)
