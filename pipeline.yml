@@ -14,8 +14,8 @@ steps:
     $dir = New-Item $(Agent.TempDirectory)\LocalRepo -ItemType directory
     Register-PSResourceRepository LocalRepo -Uri $dir -Trusted
   displayName: register local powershell repository
-- pwsh: .\Publish.ps1
-  displayName: prepare module for publishing
+- pwsh: .\Build.ps1
+  displayName: build module
 - pwsh: Publish-PSResource -Path .\output -Repository LocalRepo
   displayName: publish module to local repository
 - pwsh: Install-PSResource AzPipelineVariable -Repository LocalRepo -Prerelease -Verbose
