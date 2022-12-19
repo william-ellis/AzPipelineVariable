@@ -23,7 +23,11 @@ steps:
 - pwsh: |
     Import-Module AzPipelineVariable
     Invoke-Pester -Configuration (New-PesterConfiguration @{
-      TestResult = @{ Enabled = $true; OutputFormat = 'NUnitXml' }
+      TestResult = @{
+        Enabled = $true
+        OutputFormat = 'NUnitXml'
+        OutputPath = 'unitTestResults.xml'
+      }
       Run = @{
         Container = New-PesterContainer `
           -Path 'AzPipelineVariable.Tests.ps1' `
@@ -34,7 +38,7 @@ steps:
   displayName: publish test results
   condition: always()
   inputs:
-    testResultsFiles: testResults.xml
+    testResultsFiles: unitTestResults.xml
     testResultsFormat: NUnit
     testRunTitle: Unit Tests
 - pwsh: |
@@ -53,7 +57,11 @@ steps:
     Set-AzPipelineVariable mutableVar 'mutated'
     
     Invoke-Pester -Configuration (New-PesterConfiguration @{
-      TestResult = @{ Enabled = $true; OutputFormat = 'NUnitXml' }
+      TestResult = @{
+        Enabled = $true
+        OutputFormat = 'NUnitXml'
+        OutputPath = 'integrationTestResults.xml'
+      }
       Run = @{
         Container = New-PesterContainer `
         -ScriptBlock {
@@ -87,7 +95,7 @@ steps:
   displayName: publish test results
   condition: always()
   inputs:
-    testResultsFiles: testResults.xml
+    testResultsFiles: integrationTestResults.xml
     testResultsFormat: NUnit
     testRunTitle: Integration Tests
 - pwsh: |
