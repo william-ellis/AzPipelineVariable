@@ -4,6 +4,12 @@
 .DESCRIPTION
     The variable is set using the task.setvariable command. It will be read-only
     by default.
+.EXAMPLE
+    Set-AzPipelineVariable -Name myVar -Value 'xyz'
+.EXAMPLE
+    Set-AzPipelineVariable secretOutputVar 'xyz' -Secret -Output
+.EXAMPLE
+    'xyz' | Set-AzPipelineVariable foo
 .LINK
     https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts
 #>
