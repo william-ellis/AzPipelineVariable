@@ -11,8 +11,7 @@ steps:
     Install-Module PowerShellGet -RequiredVersion '3.0.17-beta17' -AllowPrerelease -Force
   displayName: install PowerShellGet v3
 - pwsh: |
-    $dir = "$(Agent.TempDirectory)\LocalRepo"
-    New-Item -Path $dir -ItemType directory
+    $dir = New-Item $(Agent.TempDirectory)\LocalRepo -ItemType directory
     Register-PSResourceRepository LocalRepo -Uri $dir -Trusted
   displayName: register local powershell repository
 - pwsh: .\Publish.ps1
