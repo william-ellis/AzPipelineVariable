@@ -59,22 +59,22 @@ steps:
         -ScriptBlock {
           Describe 'Set-AzPipelineVariable' {
             It 'normal var' {
-              $(normalVar) | Should -Be 'xyz'
+              '$(normalVar)' | Should -Be 'xyz'
             }
             It 'output var' {
-              $(setVars.outputVar) | Should -Be 'xyz'
+              '$(setVars.outputVar)' | Should -Be 'xyz'
             }
             It 'mapped secret var' {
-              $ENV:ASECRETVAR1 | Should -Be 'xyz' | Should -Be 'xyz'
+              $ENV:ASECRETVAR1 | Should -Be 'xyz'
             }
             It 'unmapped secret var' {
               $ENV:ASECRETVAR2 | Should -Be $null
             }
             It 'mutable var' {
-              $mutableVar | Should -Be 'mutated'
+              '$(mutableVar)' | Should -Be 'mutated'
             }
             It 'empty var' {
-              $emptyVar | Should -Be ''
+              '$(emptyVar)' | Should -Be ''
             }
           }
         }
