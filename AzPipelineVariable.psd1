@@ -10,7 +10,7 @@
     AliasesToExport = @()
     PrivateData = @{
         PSData = @{
-            Prerelease = 'alpha.1'
+            Prerelease = 'alpha01'
             Tags = @('Azure', 'Pipelines', 'Variable', 'Automation')
             # see https://github.com/PowerShell/PowerShellGet/issues/835
             # LicenseUri = 'https://opensource.org/licenses/MIT'
