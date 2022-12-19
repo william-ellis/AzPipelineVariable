@@ -99,7 +99,7 @@ steps:
     testResultsFormat: NUnit
     testRunTitle: Integration Tests
 - pwsh: |
-    Publish-PSResource -Path .\output -Repository PSGallery -ApiKey $Env:API_KEY
+    Publish-PSResource -Path .\output -Repository PSGallery -ApiKey $Env:API_KEY -Verbose
   condition: and(succeeded(), eq('${{ parameters.forceRelease }}', 'true'))
   env:
     API_KEY: $(PSGalleryApiKey)
