@@ -36,6 +36,60 @@ steps:
   inputs:
     testResultsFiles: testResults.xml
     testResultsFormat: NUnit
+    testRunTitle: Unit Tests
+- pwsh: |
+    Set-AzPipelineVariable normalVar xyz
+    Set-AzPipelineVariable outputVar xyz -Output
+    # "secret" is a resevered prefix
+    Set-AzPipelineVariable aSecretVar1 xyz -Secret
+    Set-AzPipelineVariable aSecretVar2 xyz -Secret
+    Set-AzPipelineVariable mutableVar xyz -Mutable
+    Set-AzPipelineVariable emptyVar $null
+  displayName: set variables for smoke test
+  name: setVars
+- pwsh: |
+    Import-Module AzPipelineVariable
+    
+    Set-AzPipelineVariable mutableVar 'mutated'
+    
+    Invoke-Pester -Configuration (New-PesterConfiguration @{
+      TestResult = @{ Enabled = $true; OutputFormat = 'NUnitXml' }
+      Run = @{
+        Container = New-PesterContainer `
+        -ScriptBlock {
+          Describe 'Set-AzPipelineVariable' {
+            It 'normal var' {
+              $(normalVar) | Should -Be 'xyz'
+            }
+            It 'output var' {
+              $(setVars.outputVar) | Should -Be 'xyz'
+            }
+            It 'mapped secret var' {
+              $ENV:ASECRETVAR1 | Should -Be 'xyz' | Should -Be 'xyz'
+            }
+            It 'unmapped secret var' {
+              $ENV:ASECRETVAR2 | Should -Be $null
+            }
+            It 'mutable var' {
+              $mutableVar | Should -Be 'mutated'
+            }
+            It 'empty var' {
+              $emptyVar | Should -Be ''
+            }
+          }
+        }
+      }
+    })
+  displayName: run integration test
+  env:
+    ASECRETVAR1: $(aSecretVar1)
+- task: PublishTestResults@2
+  displayName: publish test results
+  condition: always()
+  inputs:
+    testResultsFiles: testResults.xml
+    testResultsFormat: NUnit
+    testRunTitle: Integration Tests
 - pwsh: |
     Publish-PSResource -Path .\output -Repository PSGallery -ApiKey $Env:API_KEY
   condition: and(succeeded(), eq(variables['forceRelease'], 'true'))
