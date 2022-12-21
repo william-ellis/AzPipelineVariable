@@ -5,12 +5,16 @@
     Author = 'William Ellis'
     Copyright = '(c) William Ellis. All rights reserved.'
     Description = 'A PowerShell function to create variables in Azure pipelines'
+    PowerShellVersion = '5.1'
     FunctionsToExport = @('Set-AzPipelineVariable')
     CmdletsToExport = @()
     AliasesToExport = @()
     PrivateData = @{
         PSData = @{
-            Tags = @('Azure', 'Pipelines', 'Variable', 'Automation', 'DevOps')
+            Tags = @(
+                'Azure', 'Pipelines', 'Variable', 'Automation', 'DevOps',
+                'PSEdition_Core', 'PSEdition_Desktop'
+            )
             # see https://github.com/PowerShell/PowerShellGet/issues/835
             # LicenseUri = 'https://opensource.org/licenses/MIT'
             ProjectUri = 'https://github.com/william-ellis/AzPipelineVariable'
