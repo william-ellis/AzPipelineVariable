@@ -9,10 +9,21 @@ trigger:
 pool:
   vmImage: windows-latest
 
+strategy:
+  matrix:
+    PowerShell 7:
+      pwsh: true
+    PowerShell 5.1:
+      pwsh: false
+
 steps:
-- pwsh: |
-    Install-Module PowerShellGet -RequiredVersion '3.0.17-beta17' -AllowPrerelease -Force
+- task: PowerShell@2
   displayName: install PowerShellGet v3
+  inputs:
+    targetType: inline
+    pwsh: $(pwsh)
+    script: |
+      Install-Module PowerShellGet -RequiredVersion '3.0.17-beta17' -AllowPrerelease -Force
 - pwsh: |
     $dir = New-Item $(Agent.TempDirectory)\LocalRepo -ItemType directory
     Register-PSResourceRepository LocalRepo -Uri $dir -Trusted
@@ -21,22 +32,32 @@ steps:
   displayName: build module
 - pwsh: Publish-PSResource -Path .\output -Repository LocalRepo
   displayName: publish module to local repository
-- pwsh: Install-PSResource AzPipelineVariable -Repository LocalRepo -Prerelease -Verbose
+- task: PowerShell@2
   displayName: install module from local repo
-- pwsh: |
-    Import-Module AzPipelineVariable
-    Invoke-Pester -Configuration (New-PesterConfiguration @{
-      TestResult = @{
-        Enabled = $true
-        OutputFormat = 'NUnitXml'
-        OutputPath = 'unitTestResults.xml'
-      }
-      Run = @{
-        Container = New-PesterContainer `
-          -Path 'AzPipelineVariable.Tests.ps1' `
-          -Data @{ SkipImport = $true }
-      }
-    })
+  inputs:
+    targetType: inline
+    pwsh: $(pwsh)
+    script: |
+      Install-PSResource AzPipelineVariable -Repository LocalRepo -Prerelease -Verbose
+- task: PowerShell@2
+  displayName: run unit tests
+  inputs:
+    targetType: inline
+    pwsh: $(pwsh)
+    script: |
+      Import-Module AzPipelineVariable -Verbose
+      Invoke-Pester -Configuration (New-PesterConfiguration @{
+        TestResult = @{
+          Enabled = $true
+          OutputFormat = 'NUnitXml'
+          OutputPath = 'unitTestResults.xml'
+        }
+        Run = @{
+          Container = New-PesterContainer `
+            -Path 'AzPipelineVariable.Tests.ps1' `
+            -Data @{ SkipImport = $true }
+        }
+      })
 - task: PublishTestResults@2
   displayName: publish test results
   condition: succeededOrFailed()
@@ -44,54 +65,66 @@ steps:
     testResultsFiles: unitTestResults.xml
     testResultsFormat: NUnit
     testRunTitle: Unit Tests
-- pwsh: |
-    Set-AzPipelineVariable normalVar xyz
-    Set-AzPipelineVariable outputVar xyz -Output
-    # "secret" is a resevered prefix
-    Set-AzPipelineVariable aSecretVar1 xyz -Secret
-    Set-AzPipelineVariable aSecretVar2 xyz -Secret
-    Set-AzPipelineVariable mutableVar xyz -Mutable
-    Set-AzPipelineVariable emptyVar $null
+- task: PowerShell@2
   displayName: set variables for smoke test
   name: setVars
-- pwsh: Set-AzPipelineVariable mutableVar 'mutated'
+  inputs:
+    targetType: inline
+    pwsh: $(pwsh)
+    script: |
+      Set-AzPipelineVariable normalVar xyz
+      Set-AzPipelineVariable outputVar xyz -Output
+      # "secret" is a resevered prefix
+      Set-AzPipelineVariable aSecretVar1 xyz -Secret
+      Set-AzPipelineVariable aSecretVar2 xyz -Secret
+      Set-AzPipelineVariable mutableVar xyz -Mutable
+      Set-AzPipelineVariable emptyVar $null
+- task: PowerShell@2
   displayName: mutate var
-- pwsh: |
-    Import-Module AzPipelineVariable
-    
-    Invoke-Pester -Configuration (New-PesterConfiguration @{
-      TestResult = @{
-        Enabled = $true
-        OutputFormat = 'NUnitXml'
-        OutputPath = 'integrationTestResults.xml'
-      }
-      Run = @{
-        Container = New-PesterContainer `
-        -ScriptBlock {
-          Describe 'Set-AzPipelineVariable' {
-            It 'normal var' {
-              '$(normalVar)' | Should -Be 'xyz'
-            }
-            It 'output var' {
-              '$(setVars.outputVar)' | Should -Be 'xyz'
-            }
-            It 'mapped secret var' {
-              $ENV:ASECRETVAR1 | Should -Be 'xyz'
-            }
-            It 'unmapped secret var' {
-              $ENV:ASECRETVAR2 | Should -Be $null
-            }
-            It 'mutable var' {
-              '$(mutableVar)' | Should -Be 'mutated'
-            }
-            It 'empty var' {
-              '$(emptyVar)' | Should -Be ''
+  inputs:
+    targetType: inline
+    pwsh: $(pwsh)
+    script: Set-AzPipelineVariable mutableVar 'mutated'
+- task: PowerShell@2
+  displayName: run integration test
+  inputs:
+    targetType: inline
+    pwsh: $(pwsh)
+    script: |
+      Import-Module AzPipelineVariable
+      
+      Invoke-Pester -Configuration (New-PesterConfiguration @{
+        TestResult = @{
+          Enabled = $true
+          OutputFormat = 'NUnitXml'
+          OutputPath = 'integrationTestResults.xml'
+        }
+        Run = @{
+          Container = New-PesterContainer `
+          -ScriptBlock {
+            Describe 'Set-AzPipelineVariable' {
+              It 'normal var' {
+                '$(normalVar)' | Should -Be 'xyz'
+              }
+              It 'output var' {
+                '$(setVars.outputVar)' | Should -Be 'xyz'
+              }
+              It 'mapped secret var' {
+                $ENV:ASECRETVAR1 | Should -Be 'xyz'
+              }
+              It 'unmapped secret var' {
+                $ENV:ASECRETVAR2 | Should -Be $null
+              }
+              It 'mutable var' {
+                '$(mutableVar)' | Should -Be 'mutated'
+              }
+              It 'empty var' {
+                '$(emptyVar)' | Should -Be ''
+              }
             }
           }
         }
-      }
-    })
-  displayName: run integration test
+      })
   env:
     ASECRETVAR1: $(aSecretVar1)
 - task: PublishTestResults@2
