@@ -6,6 +6,9 @@ parameters:
 trigger:
   - main
 
+pr:
+  - main
+
 pool:
   vmImage: windows-latest
 
