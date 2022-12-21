@@ -9,6 +9,13 @@ trigger:
 pool:
   vmImage: windows-latest
 
+strategy:
+  matrix:
+    PowerShell 7:
+      pwsh: true
+    PowerShell 5.1:
+      pwsh: false
+
 steps:
 - pwsh: |
     Install-Module PowerShellGet -RequiredVersion '3.0.17-beta17' -AllowPrerelease -Force
@@ -23,20 +30,25 @@ steps:
   displayName: publish module to local repository
 - pwsh: Install-PSResource AzPipelineVariable -Repository LocalRepo -Prerelease -Verbose
   displayName: install module from local repo
-- pwsh: |
-    Import-Module AzPipelineVariable
-    Invoke-Pester -Configuration (New-PesterConfiguration @{
-      TestResult = @{
-        Enabled = $true
-        OutputFormat = 'NUnitXml'
-        OutputPath = 'unitTestResults.xml'
-      }
-      Run = @{
-        Container = New-PesterContainer `
-          -Path 'AzPipelineVariable.Tests.ps1' `
-          -Data @{ SkipImport = $true }
-      }
-    })
+- task: PowerShell@2
+  displayName: run unit tests
+  inputs:
+    targetType: inline
+    pwsh: $(pwsh)
+    script: |
+      Import-Module AzPipelineVariable
+      Invoke-Pester -Configuration (New-PesterConfiguration @{
+        TestResult = @{
+          Enabled = $true
+          OutputFormat = 'NUnitXml'
+          OutputPath = 'unitTestResults.xml'
+        }
+        Run = @{
+          Container = New-PesterContainer `
+            -Path 'AzPipelineVariable.Tests.ps1' `
+            -Data @{ SkipImport = $true }
+        }
+      })
 - task: PublishTestResults@2
   displayName: publish test results
   condition: succeededOrFailed()
