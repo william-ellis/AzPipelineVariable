@@ -36,7 +36,7 @@ steps:
     })
 - task: PublishTestResults@2
   displayName: publish test results
-  condition: always()
+  condition: succeededOrFailed()
   inputs:
     testResultsFiles: unitTestResults.xml
     testResultsFormat: NUnit
@@ -93,7 +93,7 @@ steps:
     ASECRETVAR1: $(aSecretVar1)
 - task: PublishTestResults@2
   displayName: publish test results
-  condition: always()
+  condition: succeededOrFailed()
   inputs:
     testResultsFiles: integrationTestResults.xml
     testResultsFormat: NUnit
