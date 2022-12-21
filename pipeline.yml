@@ -17,9 +17,13 @@ strategy:
       pwsh: false
 
 steps:
-- pwsh: |
-    Install-Module PowerShellGet -RequiredVersion '3.0.17-beta17' -AllowPrerelease -Force
+- task: PowerShell@2
   displayName: install PowerShellGet v3
+  inputs:
+    targetType: inline
+    pwsh: $(pwsh)
+    script: |
+      Install-Module PowerShellGet -RequiredVersion '3.0.17-beta17' -AllowPrerelease -Force
 - pwsh: |
     $dir = New-Item $(Agent.TempDirectory)\LocalRepo -ItemType directory
     Register-PSResourceRepository LocalRepo -Uri $dir -Trusted
@@ -28,8 +32,13 @@ steps:
   displayName: build module
 - pwsh: Publish-PSResource -Path .\output -Repository LocalRepo
   displayName: publish module to local repository
-- pwsh: Install-PSResource AzPipelineVariable -Repository LocalRepo -Prerelease -Verbose
+- task: PowerShell@2
   displayName: install module from local repo
+  inputs:
+    targetType: inline
+    pwsh: $(pwsh)
+    script: |
+      Install-PSResource AzPipelineVariable -Repository LocalRepo -Prerelease -Verbose
 - task: PowerShell@2
   displayName: run unit tests
   inputs:
