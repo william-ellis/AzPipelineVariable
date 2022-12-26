@@ -20,7 +20,7 @@ function Set-AzPipelineVariable {
         [string]
         # The name of the variable to set.
         $Name,
-        
+
         [Parameter(Mandatory, ValueFromPipeline)]
         [AllowEmptyString()]
         [string]
@@ -34,12 +34,12 @@ function Set-AzPipelineVariable {
         # Makes the variable a secret variable.
         [switch]
         $Secret,
-        
+
         # Makes the variable mutable (not readonly).
         [switch]
         $Mutable
     )
-    
+
     Write-Host ('##vso[task.setvariable variable={0};isreadonly={1};isoutput={2};issecret={3}]{4}' `
         -f $Name, -not $Mutable, $Output, $Secret, $Value)
 
