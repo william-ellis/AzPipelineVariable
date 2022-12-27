@@ -40,10 +40,12 @@ function Set-AzPipelineVariable {
         $Mutable
     )
 
-    Write-Host ('##vso[task.setvariable variable={0};isreadonly={1};isoutput={2};issecret={3}]{4}' `
-        -f $Name, -not $Mutable, $Output, $Secret, $Value)
+    process {
+        Write-Host ('##vso[task.setvariable variable={0};isreadonly={1};isoutput={2};issecret={3}]{4}' `
+            -f $Name, -not $Mutable, $Output, $Secret, $Value)
 
-    $valueToLog = if ($Secret) { '***' } else { $Value }
-    Write-Verbose ("Set variable '{0}' to '{1}'. [readonly={2}; output={3}; secret={4}]" `
-        -f $Name, $valueToLog, -not $Mutable, $Output, $Secret)
+        $valueToLog = if ($Secret) { '***' } else { $Value }
+        Write-Verbose ("Set variable '{0}' to '{1}'. [readonly={2}; output={3}; secret={4}]" `
+            -f $Name, $valueToLog, -not $Mutable, $Output, $Secret)
+    }
 }
