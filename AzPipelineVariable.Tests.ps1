@@ -1,4 +1,5 @@
 [CmdletBinding()]
+[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
 param(
     # Skip importing the module under test. Intended mainly for CI.
     [switch]$SkipImport
@@ -27,32 +28,32 @@ Describe 'Set-AzPipelineVariable' {
 
     It 'Sets the variable' {
         Set-AzPipelineVariable foo xyz
-        
+
         $command | Should -Be `
         '##vso[task.setvariable variable=foo;isreadonly=true;isoutput=false;issecret=false]xyz'
     }
 
     It 'Makes the variable readonly by default' {
         Set-AzPipelineVariable foo xyz
-        
-        $command | Should -Match 'isreadonly=true'         
+
+        $command | Should -Match 'isreadonly=true'
     }
 
     It 'Can create a mutable variable' {
         Set-AzPipelineVariable foo xyz -Mutable
-        
+
         $command | Should -Match 'isreadonly=false'
     }
 
     It 'Can create an output variable' {
         Set-AzPipelineVariable foo xyz -Output
-        
+
         $command | Should -Match 'isoutput=true'
     }
 
     It 'Can create a secret variable' {
         Set-AzPipelineVariable foo xyz -Secret
-        
+
         $command | Should -Match 'issecret=true'
     }
 
