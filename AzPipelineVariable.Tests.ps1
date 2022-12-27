@@ -1,4 +1,5 @@
 [CmdletBinding()]
+[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
 param(
     # Skip importing the module under test. Intended mainly for CI.
     [switch]$SkipImport
