@@ -30,7 +30,7 @@ Describe 'Set-AzPipelineVariable' {
         Set-AzPipelineVariable foo xyz
 
         $command | Should -Be `
-        '##vso[task.setvariable variable=foo;isreadonly=true;isoutput=false;issecret=false]xyz'
+            '##vso[task.setvariable variable=foo;isreadonly=true;isoutput=false;issecret=false]xyz'
     }
 
     It 'Makes the variable readonly by default' {
@@ -87,14 +87,14 @@ Describe 'Set-AzPipelineVariable' {
             $verbose = Set-AzPipelineVariable foo xyz -Verbose 4>&1
 
             $verbose | Should -Be `
-            "Set variable 'foo' to 'xyz'. [readonly=True; output=False; secret=False]"
+                "Set variable 'foo' to 'xyz'. [readonly=True; output=False; secret=False]"
         }
 
         It 'Does not output secret values' {
             $verbose = Set-AzPipelineVariable foo xyz -Secret -Verbose 4>&1
 
             $verbose | Should -Be `
-            "Set variable 'foo' to '***'. [readonly=True; output=False; secret=True]"
+                "Set variable 'foo' to '***'. [readonly=True; output=False; secret=True]"
         }
     }
 }
