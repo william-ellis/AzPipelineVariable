@@ -160,6 +160,8 @@ stages:
     jobs:
       - job:
         steps:
+          - checkout: self
+            persistCredentials: true
           - download: current
             artifact: module
             displayName: download module artifact
@@ -167,3 +169,9 @@ stages:
               Publish-PSResource -Path $(Pipeline.Workspace)\module -Repository PSGallery -ApiKey $Env:API_KEY -Verbose
             env:
               API_KEY: $(PSGalleryApiKey)
+            displayName: publish module to PSGallery
+          - pwsh: |
+              $version = .\ReadVersionFromManifest.ps1 -Path $(Pipeline.Workspace)\module\AzPipelineVariable.psd1
+              git tag $version
+              git push origin $version
+            displayName: tag release
