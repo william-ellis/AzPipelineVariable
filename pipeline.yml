@@ -166,6 +166,9 @@ stages:
             artifact: module
             displayName: download module artifact
           - pwsh: |
+              Install-Module PowerShellGet -RequiredVersion '3.0.17-beta17' -AllowPrerelease -Force
+            displayName: install PowerShellGet v3
+          - pwsh: |
               Publish-PSResource -Path $(Pipeline.Workspace)\module -Repository PSGallery -ApiKey $Env:API_KEY -Verbose
             env:
               API_KEY: $(PSGalleryApiKey)
