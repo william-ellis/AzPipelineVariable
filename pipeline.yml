@@ -37,6 +37,12 @@ stages:
             PowerShell 5.1:
               vmImage: windows-latest
               pwsh: false
+            Linux:
+              vmImage: ubuntu-latest
+              pwsh: true
+            MacOS:
+              vmImage: macos-latest
+              pwsh: true
         pool:
           vmImage: $(vmImage)
         steps:
