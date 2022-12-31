@@ -94,7 +94,7 @@ stages:
             inputs:
               testResultsFiles: unitTestResults.xml
               testResultsFormat: NUnit
-              testRunTitle: Unit Tests ($(Agent.JobName))
+              testRunTitle: Unit Tests $(Agent.JobName)
           - task: PowerShell@2
             displayName: set variables for smoke test
             name: setVars
@@ -163,7 +163,7 @@ stages:
             inputs:
               testResultsFiles: integrationTestResults.xml
               testResultsFormat: NUnit
-              testRunTitle: Integration Tests ($(Agent.JobName))
+              testRunTitle: Integration Tests $(Agent.JobName)
   - stage:
     displayName: publish
     condition: and(succeeded(), eq('${{ parameters.forceRelease }}', 'true'))
