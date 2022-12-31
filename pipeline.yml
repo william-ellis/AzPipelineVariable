@@ -31,7 +31,7 @@ stages:
       - job:
         strategy:
           matrix:
-            PowerShell 7:
+            Windows:
               vmImage: windows-latest
               pwsh: true
             PowerShell 5.1:
