@@ -32,9 +32,13 @@ stages:
         strategy:
           matrix:
             PowerShell 7:
+              vmImage: windows-latest
               pwsh: true
             PowerShell 5.1:
+              vmImage: windows-latest
               pwsh: false
+        pool:
+          vmImage: $(vmImage)
         steps:
           - download: current
             artifact: module
