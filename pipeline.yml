@@ -185,6 +185,6 @@ stages:
             displayName: publish module to PSGallery
           - pwsh: |
               $version = .\Read-VersionFromManifest.ps1 -Path $(Pipeline.Workspace)\module\AzPipelineVariable.psd1
-              git tag $version
-              git push origin $version
+              git tag v$version
+              git push origin v$version
             displayName: tag release
