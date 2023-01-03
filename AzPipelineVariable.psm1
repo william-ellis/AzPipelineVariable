@@ -9,34 +9,37 @@
 .EXAMPLE
     Set-AzPipelineVariable secretOutputVar 'xyz' -Secret -Output
 .EXAMPLE
-    'xyz' | Set-AzPipelineVariable foo
+    Get-Content .\example.json | ConvertFrom-Json | Select-Object -Expand foo | Set-AzPipelineVariable myVar
 .LINK
     https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts
 #>
 function Set-AzPipelineVariable {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         # The name of the variable to set.
         $Name,
 
-        [Parameter(Mandatory, ValueFromPipeline)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [AllowEmptyString()]
         [string]
         # The value of the variable to set.
         $Value,
 
-        # Makes the variable an output variable.
+        [Parameter(ValueFromPipelineByPropertyName)]
         [switch]
+        # Makes the variable an output variable.
         $Output,
 
-        # Makes the variable a secret variable.
+        [Parameter(ValueFromPipelineByPropertyName)]
         [switch]
+        # Makes the variable a secret variable.
         $Secret,
 
-        # Makes the variable mutable (not readonly).
+        [Parameter(ValueFromPipelineByPropertyName)]
         [switch]
+        # Makes the variable mutable (not readonly).
         $Mutable
     )
 

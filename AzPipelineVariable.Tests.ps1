@@ -15,10 +15,10 @@ BeforeAll {
 Describe 'Set-AzPipelineVariable' {
 
     BeforeEach {
-        $script:command = $null
+        $script:command = @()
 
         Mock Write-Host {
-            $script:command = $Object
+            $script:command += $Object
         } -ModuleName AzPipelineVariable
     }
 
@@ -57,10 +57,25 @@ Describe 'Set-AzPipelineVariable' {
         $command | Should -Match 'issecret=true'
     }
 
-    It 'Can take the value as pipeline input' {
-        (@{ value = 'xyz' }).value | Set-AzPipelineVariable foo
+    Context 'Pipeline input' {
 
-        $command | Should -BeLike '*]xyz'
+        It 'Accepts pipeline input' {
+            'xyz' | Set-AzPipelineVariable foo
+
+            $command | Should -BeLike '*]xyz'
+        }
+
+        It 'Accepts pipeline input by property name' {
+            [PSCustomObject]@{ Name = 'foo'; Value = 'abc'; Output = $true },
+            [PSCustomObject]@{ Name = 'bar'; Value = 'xyz'; Secret = $true },
+            [PSCustomObject]@{ Name = 'baz'; Value = 'zzz'; Mutable = $true } `
+            | Set-AzPipelineVariable
+
+            $command | Should -HaveCount 3
+            $command[0] | Should -BeLike '*variable=foo;*output=true*]abc'
+            $command[1] | Should -BeLike '*variable=bar;*secret=true*]xyz'
+            $command[2] | Should -BeLike '*variable=baz;*readonly=false*]zzz'
+        }
     }
 
     It 'Allows the value to be an empty string' {
