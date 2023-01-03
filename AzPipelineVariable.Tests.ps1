@@ -15,10 +15,10 @@ BeforeAll {
 Describe 'Set-AzPipelineVariable' {
 
     BeforeEach {
-        $script:command = $null
+        $script:command = @()
 
         Mock Write-Host {
-            $script:command = $Object
+            $script:command += $Object
         } -ModuleName AzPipelineVariable
     }
 
