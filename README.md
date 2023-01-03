@@ -13,5 +13,5 @@ A PowerShell wrapper for the [`task.setvariable`](https://learn.microsoft.com/en
 ```ps
 Set-AzPipelineVariable -Name myVar -Value 'xyz'
 Set-AzPipelineVariable secretOutputVar 'xyz' -Secret -Output
-'xyz' | Set-AzPipelineVariable foo
+Get-Content .\example.json | ConvertFrom-Json | Select-Object -Expand foo | Set-AzPipelineVariable myVar
 ```
