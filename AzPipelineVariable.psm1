@@ -9,7 +9,7 @@
 .EXAMPLE
     Set-AzPipelineVariable secretOutputVar 'xyz' -Secret -Output
 .EXAMPLE
-    'xyz' | Set-AzPipelineVariable foo
+    Get-Content .\example.json | ConvertFrom-Json | Select-Object -Expand foo | Set-AzPipelineVariable myVar
 .LINK
     https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-variables-scripts
 #>
