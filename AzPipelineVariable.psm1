@@ -16,12 +16,12 @@
 function Set-AzPipelineVariable {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         # The name of the variable to set.
         $Name,
 
-        [Parameter(Mandatory, ValueFromPipeline)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [AllowEmptyString()]
         [string]
         # The value of the variable to set.

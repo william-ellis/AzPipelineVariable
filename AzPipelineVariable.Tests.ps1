@@ -57,10 +57,19 @@ Describe 'Set-AzPipelineVariable' {
         $command | Should -Match 'issecret=true'
     }
 
-    It 'Can take the value as pipeline input' {
-        'xyz' | Set-AzPipelineVariable foo
+    Context 'Pipeline input' {
 
-        $command | Should -BeLike '*]xyz'
+        It 'Can take the value as pipeline input' {
+            'xyz' | Set-AzPipelineVariable foo
+
+            $command | Should -BeLike '*]xyz'
+        }
+
+        It 'Can take pipeline input by property name' {
+            [PSCustomObject]@{ Name = 'foo'; Value = 'abc' } | Set-AzPipelineVariable
+
+            $command | Should -BeLike '*variable=foo;*]abc'
+        }
     }
 
     It 'Allows the value to be an empty string' {
