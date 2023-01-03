@@ -4,7 +4,7 @@
     GUID = '01b2c801-31b5-44f6-a957-12ea0a273d79'
     Author = 'William Ellis'
     Copyright = '(c) William Ellis. All rights reserved.'
-    Description = 'A PowerShell function to create variables in Azure pipelines'
+    Description = 'A PowerShell wrapper for the "task.setvariable" Azure Pipelines command'
     PowerShellVersion = '5.1'
     FunctionsToExport = @('Set-AzPipelineVariable')
     CmdletsToExport = @()
