@@ -19,6 +19,7 @@
             # see https://github.com/PowerShell/PowerShellGet/issues/835
             # LicenseUri = 'https://opensource.org/licenses/MIT'
             ProjectUri = 'https://github.com/william-ellis/AzPipelineVariable'
+            ReleaseNotes = 'Please see https://github.com/william-ellis/AzPipelineVariable/blob/main/CHANGELOG.md for release notes'
         }
     }
 }
