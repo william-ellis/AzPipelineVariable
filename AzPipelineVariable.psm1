@@ -28,14 +28,17 @@ function Set-AzPipelineVariable {
         $Value,
 
         # Makes the variable an output variable.
+        [Parameter(ValueFromPipelineByPropertyName)]
         [switch]
         $Output,
 
         # Makes the variable a secret variable.
+        [Parameter(ValueFromPipelineByPropertyName)]
         [switch]
         $Secret,
 
         # Makes the variable mutable (not readonly).
+        [Parameter(ValueFromPipelineByPropertyName)]
         [switch]
         $Mutable
     )
