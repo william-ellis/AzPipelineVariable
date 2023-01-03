@@ -66,9 +66,13 @@ Describe 'Set-AzPipelineVariable' {
         }
 
         It 'Can take pipeline input by property name' {
-            [PSCustomObject]@{ Name = 'foo'; Value = 'abc' } | Set-AzPipelineVariable
+            [PSCustomObject]@{ Name = 'foo'; Value = 'abc' },
+            [PSCustomObject]@{ Name = 'bar'; Value = 'xyz' }
+            | Set-AzPipelineVariable
 
-            $command | Should -BeLike '*variable=foo;*]abc'
+            $command | Should -HaveCount 2
+            $command[0] | Should -BeLike '*variable=foo;*]abc'
+            $command[1] | Should -BeLike '*variable=bar;*]xyz'
         }
     }
 
