@@ -68,7 +68,7 @@ Describe 'Set-AzPipelineVariable' {
         It 'Accepts pipeline input by property name' {
             [PSCustomObject]@{ Name = 'foo'; Value = 'abc'; Output = $true },
             [PSCustomObject]@{ Name = 'bar'; Value = 'xyz'; Secret = $true },
-            [PSCustomObject]@{ Name = 'baz'; Value = 'zzz'; Mutable = $true }
+            [PSCustomObject]@{ Name = 'baz'; Value = 'zzz'; Mutable = $true } `
             | Set-AzPipelineVariable
 
             $command | Should -HaveCount 3
