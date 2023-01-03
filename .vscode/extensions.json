@@ -3,6 +3,7 @@
     "esbenp.prettier-vscode",
     "ms-vscode.powershell",
     "ms-azure-devops.azure-pipelines",
-    "editorconfig.editorconfig"
+    "editorconfig.editorconfig",
+    "davidanson.vscode-markdownlint"
   ]
 }
