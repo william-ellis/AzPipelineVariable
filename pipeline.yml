@@ -9,6 +9,14 @@ trigger:
 pr:
   - main
 
+schedules:
+  - cron: "0 0 * * *"
+    displayName: nightly build
+    branches:
+      include:
+        - main
+    always: true
+
 pool:
   vmImage: windows-latest
 
