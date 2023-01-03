@@ -59,13 +59,13 @@ Describe 'Set-AzPipelineVariable' {
 
     Context 'Pipeline input' {
 
-        It 'Can take the value as pipeline input' {
+        It 'Accepts pipeline input' {
             'xyz' | Set-AzPipelineVariable foo
 
             $command | Should -BeLike '*]xyz'
         }
 
-        It 'Can take pipeline input by property name' {
+        It 'Accepts pipeline input by property name' {
             [PSCustomObject]@{ Name = 'foo'; Value = 'abc'; Output = $true },
             [PSCustomObject]@{ Name = 'bar'; Value = 'xyz'; Secret = $true },
             [PSCustomObject]@{ Name = 'baz'; Value = 'zzz'; Mutable = $true }
