@@ -112,7 +112,7 @@ stages:
               script: |
                 Set-AzPipelineVariable normalVar xyz
                 Set-AzPipelineVariable outputVar xyz -Output
-                # "secret" is a resevered prefix
+                # "secret" is a reserved prefix
                 Set-AzPipelineVariable aSecretVar1 xyz -Secret
                 Set-AzPipelineVariable aSecretVar2 xyz -Secret
                 Set-AzPipelineVariable mutableVar xyz -Mutable
