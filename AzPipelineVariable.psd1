@@ -16,8 +16,7 @@
                 'PSEdition_Core', 'PSEdition_Desktop',
                 'Windows', 'Linux', 'MacOS'
             )
-            # see https://github.com/PowerShell/PowerShellGet/issues/835
-            # LicenseUri = 'https://opensource.org/licenses/MIT'
+            LicenseUri = 'https://github.com/william-ellis/AzPipelineVariable/blob/main/LICENSE'
             ProjectUri = 'https://github.com/william-ellis/AzPipelineVariable'
             ReleaseNotes = 'Please see https://github.com/william-ellis/AzPipelineVariable/blob/main/CHANGELOG.md for release notes'
         }
