@@ -4,10 +4,22 @@ parameters:
     default: false
 
 trigger:
-  - main
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - README.md
+      - CHANGELOG.md
 
 pr:
-  - main
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - README.md
+      - CHANGELOG.md
 
 schedules:
   - cron: "0 0 * * *"
