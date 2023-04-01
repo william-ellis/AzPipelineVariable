@@ -75,7 +75,7 @@ stages:
               targetType: inline
               pwsh: $(pwsh)
               script: |
-                Install-Module PowerShellGet -RequiredVersion '3.0.18-beta18' -AllowPrerelease -Force
+                Install-Module PowerShellGet -RequiredVersion '3.0.20-beta20' -AllowPrerelease -Force
           - pwsh: |
               $dir = New-Item $(Agent.TempDirectory)\LocalRepo -ItemType directory
               Register-PSResourceRepository LocalRepo -Uri $dir -Trusted
@@ -196,7 +196,7 @@ stages:
             artifact: module
             displayName: download module artifact
           - pwsh: |
-              Install-Module PowerShellGet -RequiredVersion '3.0.18-beta18' -AllowPrerelease -Force
+              Install-Module PowerShellGet -RequiredVersion '3.0.20-beta20' -AllowPrerelease -Force
             displayName: install PowerShellGet v3
           - pwsh: |
               Publish-PSResource -Path $(Pipeline.Workspace)\module -Repository PSGallery -ApiKey $Env:API_KEY -Verbose
