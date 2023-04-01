@@ -1,6 +1,6 @@
 @{
     RootModule = 'AzPipelineVariable.psm1'
-    ModuleVersion = '0.0.4'
+    ModuleVersion = '1.0.0'
     GUID = '01b2c801-31b5-44f6-a957-12ea0a273d79'
     Author = 'William Ellis'
     Copyright = '(c) William Ellis. All rights reserved.'
